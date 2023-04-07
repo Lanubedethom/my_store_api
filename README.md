@@ -33,7 +33,12 @@ Para salir de la base de datos, usar:
 Para salir del contenedor, usar:  
 `
   exit
+`  
+Para ver el espacio total de las imagenes y contenedores , usar:  
 `
+  docker system df
+`   
+
 
 
 
