@@ -1,14 +1,14 @@
-import { faker } from '@faker-js/faker';
-import boom from '@hapi/boom';
-import { pool } from "../libs/postgres.js";
+const { faker } = require("@faker-js/faker");
+const boom = require("@hapi/boom");
+const { User } = require("../db/models/user.model.js");
+const { sequelize } = require("../libs/sequelize.js");
 
-export class UsersService {
+class UsersService {
   constructor() {
     this.user = [];
     this.generate();
-    this.pool = pool;
-    this.pool.on('error', (err) => console.error(err));
-
+    //this.pool = pool;
+    //this.pool.on('error', (err) => console.error(err));
   }
 
   generate() {
@@ -24,48 +24,42 @@ export class UsersService {
   }
 
   async find() {
-    const query = 'select * from tasks';
-    const response = await this.pool.query(query);
-    return response.rows;
+    return await User.findAll();
   }
 
   async findOne(id) {
-    const query = 'select * from tasks where id = $1'
-    const response = await this.pool.query(query, [id]);
-    //const user = this.user.find((user) => user.id === id);
-    //if (!user) throw boom.notFound('User not found');
-    return response.rows;
+    const user = await User.findByPk(id);
+    if (!user) {
+      throw boom.notFound("user not found");
+    }
+    return user;
   }
 
   async create(data) {
-    const { title, completed} = data;
-    const query = 'insert into tasks (title) values ($1, $2)'
-    const response = await this.pool.query(query, [title, completed]);
-
-    /*
-    const newUser = {
-      id: faker.datatype.uuid(),
-      ...data
-    };
-    this.user.push(newUser);*/
-    return response[0];
+    return await User.create(data);
   }
 
   async update(id, change) {
-    const index = this.user.findIndex((user) => user.id === id);
-    if (index === -1) throw boom.notFound('User not found');
-    const data = this.user[index];
-    this.user[index] = {
-      ...data,
-      ...change,
-    };
-    return this.user[index];
+    const user = await this.findOne(id);
+    return await user.update(change);
+
+    //const index = this.user.findIndex((user) => user.id === id);
+    //if (index === -1) throw boom.notFound('User not found');
+    //const data = this.user[index];
+    //this.user[index] = {
+      //...data,
+      //...change,
+    //};
+    //return this.user[index];
   }
 
   async delete(id) {
-    const index = this.user.findIndex((user) => user.id === id);
-    if (index === -1) throw boom.notFound('User not found');
-    this.user.splice(index, 1);
+    const user = await this.findOne(id);
+    await user.destroy();
     return { id };
   }
 }
+
+module.exports = {
+  UsersService
+};

@@ -1,13 +1,19 @@
-import routerUser from './users.router.js';
-import routerProduct from './product.router.js'
-import { Router } from "express";
+const routerUser = require("./users.router.js");
+const routerProduct = require("./product.router.js");
+const Router = require('express');
+const routerCustomer = require('./customers.router.js');
 
 const routerApi = (app) => {
   const router = Router();
-  app.use('/api/v1', router)
-  router.use('/users', routerUser);
-  router.use('/products', routerProduct);
+  app.use("/api/v1", router);
+  router.use("/users", routerUser);
+  router.use("/products", routerProduct);
+  router.user('./customers', routerCustomer);
 };
 
-export default routerApi;
+module.exports = {
+  routerApi
+};
+
+
 

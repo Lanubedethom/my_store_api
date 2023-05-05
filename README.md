@@ -2,9 +2,9 @@
 Proyecto del curso de backend con nodejs  
 Para levantar el contenedor que contiene postgres, 
 usar el comando:   
-`
+```bash
   docker-compose up -d nameService
-`   
+```   
 Para mostrar los contenedores levantados, usar:  
 `
   docker-compose ps
@@ -18,7 +18,7 @@ de levantar es usar:
 `
   docker-compose exec postgres bash
 `  
-Para conectarte a mysql dentro del contenedor, usar  
+Para conectarte a postgres dentro del contenedor, usar  
 `
   psql -h localhost -d my_store -U userName
 `

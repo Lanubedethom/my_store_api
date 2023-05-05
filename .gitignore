@@ -214,6 +214,7 @@ $RECYCLE.BIN/
 
 # docker
 postgres_data
+mysql_data
 
 # Windows shortcuts
 *.lnk

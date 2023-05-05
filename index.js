@@ -1,8 +1,12 @@
-import { configure as config } from "./config/config.js";
-import express from 'express';
-import routerApi from "./routes/index.js";
-import { logError, handlerError } from "./middleware/errorHandler.js";
-import { errorBoomHandler } from "./middleware/errorBoomHandler.js";
+const config = require("./config/config.js");
+const express = require("express");
+const { routerApi }= require("./routes/index.js");
+const {
+  logError,
+  handlerError,
+  ormValidationError,
+} = require("./middleware/errorHandler.js");
+const { errorBoomHandler } = require("./middleware/errorBoomHandler.js");
 
 const app = express();
 
@@ -12,9 +16,10 @@ routerApi(app);
 
 //middlewares
 app.use(logError);
+app.use(ormValidationError);
 app.use(errorBoomHandler);
 app.use(handlerError);
 
 app.listen(config.port, () => {
-  console.log(`Escuchando desde el puerto ${config.port}...`)
+  console.log(`Escuchando desde el puerto ${config.port}...`);
 });

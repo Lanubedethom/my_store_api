@@ -1,4 +1,4 @@
-export const errorBoomHandler = (err, req, res, next) => {
+const errorBoomHandler = (err, req, res, next) => {
   if (err.isBoom) {
     const { output } = err;
     res.status(output.statusCode).json(output.payload);
@@ -6,3 +6,7 @@ export const errorBoomHandler = (err, req, res, next) => {
     next(err);
   }
 };
+
+module.exports =  {
+  errorBoomHandler
+}

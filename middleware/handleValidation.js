@@ -1,6 +1,6 @@
-import boom from '@hapi/boom';
+const boom = require('@hapi/boom');
 
-export const handleValidation = (schema, property) => {
+const handleValidation = (schema, property) => {
   return (req, res, next) => {
     const data = req[property];
     const { error } = schema.validate(data, {abortEarly: false});
@@ -11,4 +11,6 @@ export const handleValidation = (schema, property) => {
   }
 };
 
-
+module.exports = {
+  handleValidation
+}

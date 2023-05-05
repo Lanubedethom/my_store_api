@@ -1,13 +1,13 @@
-import { Router } from 'express';
-import { ProductService } from '../services/product.service.js';
-import {
+const express = require('express');
+const { ProductService } = require('../services/product.service.js');
+const {
   createProductSchema,
   updateProductSchema,
   getProductSchema,
-} from '../schema/product.schema.js';
-import { handleValidation } from '../middleware/handleValidation.js';
+} = require('../schema/product.schema.js');
+const { handleValidation } = require('../middleware/handleValidation.js');
 
-const router = Router();
+const router = express.Router();
 const service = new ProductService();
 
 router.get('/', async (req, res, next) => {
@@ -77,4 +77,4 @@ router.delete(
   }
 );
 
-export default router;
+module.exports = router;

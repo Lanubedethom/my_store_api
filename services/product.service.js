@@ -1,7 +1,7 @@
-import { faker } from '@faker-js/faker';
-import boom from '@hapi/boom';
+const { faker } = require('@faker-js/faker');
+const boom = require('@hapi/boom');
 
-export class ProductService {
+class ProductService {
   constructor() {
     this.product = [];
     this.generate();
@@ -18,7 +18,7 @@ export class ProductService {
       });
     }
   }
-
+0
   async find() {
     return this.product;
   }
@@ -55,4 +55,8 @@ export class ProductService {
     this.product.splice(index, 1);
     return { id };
   }
+}
+
+module.exports = {
+  ProductService
 }
