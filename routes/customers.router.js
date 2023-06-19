@@ -1,16 +1,16 @@
-const { Router } = require('express');
-const { CustomersService } = require('../services/customers.service');
+const { Router } = require("express");
+const { CustomersService } = require('../services/customers.service.js');
 const {
   createCustomerSchema,
   updateCustomerSchema,
   getCustomerSchema,
-} = require('../schema/customer.schema');
-const { handleValidation } = require('../middleware/handleValidation');
+} = require('../schema/customer.schema.js');
+const { handleValidation } = require('../middleware/handleValidation.js');
 
 const router = Router();
 const service = new CustomersService();
 
-router.get('/', async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const customer = await service.find();
     res.json(customer);
@@ -55,7 +55,7 @@ router.patch(
     try {
       const { id } = req.params;
       const body = req.body;
-      const customer = service.update(id, body);
+      const customer = await service.update(id, body);
       res.json(customer);
     } catch (error) {
       next(error);
@@ -71,8 +71,8 @@ router.delete(
       const { id } = req.params;
       await service.delete(id);
       res.status(201).json({ id });
-    } catch {
-      next(next);
+    } catch (error) {
+      next(error);
     }
   }
 );

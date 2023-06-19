@@ -23,7 +23,9 @@ class CustomersService {
   }
 
   async find() {
-    return await Customer.findAll();
+    return await Customer.findAll({
+      include: ['user']
+    });
   };
 
   async findOne(id) {
@@ -35,17 +37,23 @@ class CustomersService {
   };
 
   async create(data) {
-    return await Customer.create(data);
+    return await Customer.create(data, {
+      include: ['user']
+    });
   }
 
   async update(id, data) {
     const customer = await this.findOne(id);
-    return await Customer.update(data);
+    return await customer.update(data);
   }
 
   async delete(id) {
     const customer = await this.findOne(id);
-    await Customer.destroy();
+    await customer.destroy();
     return { id };
   }
+}
+
+module.exports = {
+  CustomersService
 }

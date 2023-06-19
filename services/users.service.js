@@ -24,7 +24,9 @@ class UsersService {
   }
 
   async find() {
-    return await User.findAll();
+    return await User.findAll({
+      include: ['customer']
+    });
   }
 
   async findOne(id) {

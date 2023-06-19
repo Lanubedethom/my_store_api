@@ -8,7 +8,7 @@ const routerApi = (app) => {
   app.use("/api/v1", router);
   router.use("/users", routerUser);
   router.use("/products", routerProduct);
-  router.user('./customers', routerCustomer);
+  router.use('/customers', routerCustomer);
 };
 
 module.exports = {

@@ -18,7 +18,7 @@ class ProductService {
       });
     }
   }
-0
+
   async find() {
     return this.product;
   }
