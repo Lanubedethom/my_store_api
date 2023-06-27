@@ -7,10 +7,15 @@ const {
   ormValidationError,
 } = require("./middleware/errorHandler.js");
 const { errorBoomHandler } = require("./middleware/errorBoomHandler.js");
+const {checkApiKey} = require("./middleware/auth.handler");
 
 const app = express();
 
 app.use(express.json());
+
+app.get('/nueva-ruta', checkApiKey, (req, res) => {
+  res.send('hola, soy una nueva ruta')
+})
 
 routerApi(app);
 
@@ -23,3 +28,4 @@ app.use(handlerError);
 app.listen(config.port, () => {
   console.log(`Escuchando desde el puerto ${config.port}...`);
 });
+

@@ -2,6 +2,7 @@ const { faker } = require("@faker-js/faker");
 const boom = require("@hapi/boom");
 const { User } = require("../db/models/user.model.js");
 const { sequelize } = require("../libs/sequelize.js");
+const bcrypt = require('bcrypt');
 
 class UsersService {
   constructor() {
@@ -38,7 +39,14 @@ class UsersService {
   }
 
   async create(data) {
-    return await User.create(data);
+    const hash = await bcrypt.hash(data.password, 10);
+    const newUser = await User.create({
+      ...data,
+      password: hash,
+    });
+    //esto evita que se muestre la contraseña por seguridad
+    delete newUser.dataValues.password;
+    return newUser;
   }
 
   async update(id, change) {

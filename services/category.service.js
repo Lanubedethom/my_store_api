@@ -1,7 +1,8 @@
 const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
+const { Category } = require('../db/models/category.model');
 
-export class CategoryService {
+class CategoryService {
 
     constructor() {
         this.products = [];
@@ -21,39 +22,31 @@ export class CategoryService {
     };
 
     async find() {
-      return this.products;
+      return await Category.findAll();
     }
 
     async findOne(id) {
-      const item = this.products.find(item => item.id === id);
-      if (!item) throw  boom.notFound('User not found');
-      return item;
+      const category = await Category.findByPk(id, {
+        include: ['products']
+      });
+      if (!category) {
+        throw boom.notFound('Category not found');
+      }
+      return category;
     }
 
     async create(data) {
-      const newCategory = {
-        id: faker.datatype.uuid(),
-        ...data,
-      };
-      this.products.push(newCategory);
-      return newCategory;
+      return await Category.create(data);
     };
 
     async update(id, change) {
-      const index = this.products.findIndex(item => item.id === id);
-      if (index === -1) throw boom.notFound('User not found');
-      const data = this.products[index];
-      this.products[index] = {
-        ...data,
-        ...change,
-      };
-      return this.products[index];
+      const category = await this.findOne(id);
+      return await category.update(change);
     };
 
     async delete(id){
-      const index = this.products.findIndex(item => item.id === id);
-      if (index === -1) throw boom.notFound('User not found');
-      this.products.splice(index, 1);
+      const category = await this.findOne(id);
+      await category.destroy();
       return { id };
     }
 }

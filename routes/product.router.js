@@ -4,20 +4,25 @@ const {
   createProductSchema,
   updateProductSchema,
   getProductSchema,
+  queryProductSchema,
 } = require('../schema/product.schema.js');
 const { handleValidation } = require('../middleware/handleValidation.js');
 
 const router = express.Router();
 const service = new ProductService();
 
-router.get('/', async (req, res, next) => {
-  try {
-    const response = await service.find();
-    res.json(response);
-  } catch (error) {
-    next(error);
+router.get(
+  '/',
+  handleValidation(queryProductSchema, 'query'),
+  async (req, res, next) => {
+    try {
+      const response = await service.find(req.query);
+      res.json(response);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.get(
   '/:id',
@@ -78,4 +83,3 @@ router.delete(
 );
 
 module.exports = router;
-
