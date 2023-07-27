@@ -24,6 +24,21 @@ class OrderService {
     return Order;
   }
 
+  async findByUser(userId) {
+    const orders = await Order.findAll({
+      where: {
+        '$customer.user.id$': userId
+      },
+      include: [
+        {
+          association: 'customer',
+          include: ['user']
+        }
+      ]
+    });
+    return orders;
+  }
+
   async create(data) {
     return await Order.create(data);
   }

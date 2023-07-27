@@ -13,6 +13,9 @@ const app = express();
 
 app.use(express.json());
 
+
+require('./utils/index');
+
 app.get('/nueva-ruta', checkApiKey, (req, res) => {
   res.send('hola, soy una nueva ruta')
 })

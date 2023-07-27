@@ -1,6 +1,7 @@
 const { faker } = require("@faker-js/faker");
 const boom = require("@hapi/boom");
 const { Customer } = require('../db/models/customer.model');
+const bcrypt = require('bcrypt');
 
 class CustomersService {
   constructor() {
@@ -37,7 +38,15 @@ class CustomersService {
   };
 
   async create(data) {
-    return await Customer.create(data, {
+    const hash = await bcrypt.hash(data.user.password, 10);
+    const newData = {
+      ...data,
+      user: {
+        ...data.user,
+        password: hash
+      }
+    }
+    return await Customer.create(newData, {
       include: ['user']
     });
   }

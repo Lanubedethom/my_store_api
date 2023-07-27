@@ -1,6 +1,7 @@
 const { faker } = require("@faker-js/faker");
 const boom = require("@hapi/boom");
 const { User } = require("../db/models/user.model.js");
+const { Order } = require('../db/models/order.model');
 const { sequelize } = require("../libs/sequelize.js");
 const bcrypt = require('bcrypt');
 
@@ -29,6 +30,13 @@ class UsersService {
       include: ['customer']
     });
   }
+
+  async findByEmail(email) {
+    return await User.findOne({
+      where: { email },
+    });
+  }
+
 
   async findOne(id) {
     const user = await User.findByPk(id);
